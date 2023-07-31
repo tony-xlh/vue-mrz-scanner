@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "dynamsoft-camera-enhancer": "^3.3.4",
+    "dynamsoft-label-recognizer": "^2.2.30",
     "vue": "^3.3.4"
   },
   "devDependencies": {
