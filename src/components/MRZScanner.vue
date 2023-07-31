@@ -8,7 +8,7 @@ const dlr: Ref<Promise<LabelRecognizer> | null> = ref(null);
 
 onMounted(async()=>{
     LabelRecognizer.onResourcesLoadStarted = () => { console.log('load started...'); }
-    LabelRecognizer.onResourcesLoadProgress = (resourcesPath?:string, progress?:{ loaded:number, total:number })=>{console.log("Loading resources progress: " + progress!.loaded + "/" + progress!.total);};
+    LabelRecognizer.onResourcesLoadProgress = (_resourcesPath?:string, progress?:{ loaded:number, total:number })=>{console.log("Loading resources progress: " + progress!.loaded + "/" + progress!.total);};
     LabelRecognizer.onResourcesLoaded = async () => { console.log('load ended...');}
 
     try{
