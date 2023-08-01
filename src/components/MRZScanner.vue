@@ -38,8 +38,7 @@ onMounted(async()=>{
     await dlr.updateRuntimeSettingsFromString("video-mrz");
     dce.setVideoFit("cover");
     // Callback to MRZ recognizing result
-    dlr.onMRZRead = async (txt, results) => {
-      console.log("MRZ results: \n", txt, "\n", results);
+    dlr.onMRZRead = async (_txt, results) => {
       emit("scanned",results);
     }
     emit("initialized", dce, dlr);
