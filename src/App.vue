@@ -8,6 +8,8 @@ const showScanner = ref(false);
 const MRZLineResults = ref<DLRLineResult[]>([]);
 const confirmed = ref(false);
 const showConfirmation = ref(false);
+const showProgress = ref(true);
+const progress = ref(0);
 
 const startScanner = () => {
   confirmed.value = false;
@@ -25,6 +27,10 @@ const stopScanner = () => {
 const onScanned = (results:DLRLineResult[]) => {
   MRZLineResults.value = results;
   showConfirmation.value = true;
+}
+
+const updateProgress = (progressInfo:{loaded:number,total:number}) => {
+  progress.value = parseFloat((progressInfo.loaded / progressInfo.total).toFixed(2)) * 100; 
 }
 
 const MRZString = () => {
@@ -47,7 +53,7 @@ const correct = () => {
 
 const rescan = () => {
   showConfirmation.value = false;
-  //scanning.value = true;
+  scanning.value = true;
 }
 
 </script>
@@ -62,12 +68,21 @@ const rescan = () => {
     <MRZScanner 
       :scanning="scanning"
       @scanned="(results)=>onScanned(results)"
+      @onResourcesLoadStarted="showProgress = true"
+      @onResourcesLoadProgress="(_resources,progress) => updateProgress(progress)"
+      @onResourcesLoaded="showProgress = false"
     >
       <button class="close-button" @click="stopScanner">Close</button>
       <div v-if="showConfirmation" class="confirmation modal">
         <pre>{{MRZString()}}</pre>
         <button @click="correct">Correct</button>
         <button @click="rescan">Rescan</button>
+      </div>
+      <div v-if="showProgress" class="progress modal">
+        <div>Loading the model...</div>
+        <div>
+          Progress: <span>{{progress}}</span>%
+        </div>
       </div>
     </MRZScanner>
   </div>
