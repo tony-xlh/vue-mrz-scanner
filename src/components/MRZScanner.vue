@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, type Ref} from "vue";
+import { onMounted, onUnmounted, ref, watch, type Ref} from "vue";
 import {CameraEnhancer, DrawingItem} from "dynamsoft-camera-enhancer";
 import {DLRLineResult, LabelRecognizer} from "dynamsoft-label-recognizer";
 const elRef: Ref<HTMLDivElement | null> = ref(null);
@@ -65,6 +65,20 @@ onUnmounted(async() => {
     dce.dispose(true);
   }
 })
+
+watch(() => props.scanning, (newVal) => {
+  if (dlr && dce) {
+    if (newVal === true) {
+      if ((dlr as any)._bPauseScan) {
+        dlr.resumeScanning();
+      }else{
+        dlr.startScanning(true);
+      }
+    }else{
+      dlr.stopScanning(true);
+    }
+  }
+});
 </script>
 
 <template>
