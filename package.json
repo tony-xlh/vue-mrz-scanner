@@ -1,8 +1,25 @@
 {
   "name": "vue-mrz-scanner",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "1.0.0",
   "type": "module",
+  "description": "A Vue component to scan MRZ on passports, visa cards, etc.",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/mrz-scanner.umd.cjs",
+  "module": "./dist/mrz-scanner.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "import": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/mrz-scanner.js"
+    },
+    "require": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/mrz-scanner.umd.cjs"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
@@ -22,5 +39,25 @@
     "vite": "^4.4.5",
     "vite-plugin-dts": "^3.4.0",
     "vue-tsc": "^1.8.5"
-  }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": "https://github.com/tony-xlh/vue-mrz-scanner",
+  "author": "xulihang <xulihanghai@gmail.com> (https://github.com/xulihang)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tony-xlh/vue-mrz-scanner/issues"
+  },
+  "homepage": "https://github.com/tony-xlh/vue-mrz-scanner#readme",
+  "keywords": [
+    "mrz",
+    "id",
+    "passport",
+    "visa",
+    "ocr",
+    "text",
+    "recognition",
+    "dynamsoft"
+  ]
 }
