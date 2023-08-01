@@ -1,7 +1,7 @@
 {
   "name": "vue-mrz-scanner",
   "private": false,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "A Vue component to scan MRZ on passports, visa cards, etc.",
   "files": [
