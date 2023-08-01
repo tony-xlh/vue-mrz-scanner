@@ -15,15 +15,26 @@ const props = defineProps({
 const emit = defineEmits<{
   (e: 'scanned', results: DLRLineResult[]): void
   (e: 'initialized', dce:CameraEnhancer,dlr:LabelRecognizer): void
+  (e: 'onResourcesLoadStarted'): void
+  (e: 'onResourcesLoadProgress',resourcesPath: string, progress: { loaded:number, total:number }): void
+  (e: 'onResourcesLoaded'): void
 }>();
 
 let dce:CameraEnhancer|null;
 let dlr:LabelRecognizer|null;
 
 onMounted(async()=>{
-  LabelRecognizer.onResourcesLoadStarted = () => { console.log('load started...'); }
-  LabelRecognizer.onResourcesLoadProgress = (_resourcesPath?:string, progress?:{ loaded:number, total:number })=>{console.log("Loading resources progress: " + progress!.loaded + "/" + progress!.total);};
-  LabelRecognizer.onResourcesLoaded = async () => { console.log('load ended...');}
+  LabelRecognizer.onResourcesLoadStarted = () => { 
+    emit("onResourcesLoadStarted");
+  }
+  LabelRecognizer.onResourcesLoadProgress = (resourcesPath?:string, progress?:{ loaded:number, total:number })=>{
+    if (resourcesPath && progress) {
+      emit("onResourcesLoadProgress",resourcesPath,progress);
+    }
+  };
+  LabelRecognizer.onResourcesLoaded = () => { 
+    emit("onResourcesLoaded");
+  }
 
   try{
     if (LabelRecognizer.isWasmLoaded() === false) {
