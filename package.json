@@ -15,10 +15,12 @@
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@types/node": "^20.4.5",
     "@vitejs/plugin-vue": "^4.2.3",
     "patch-package": "^8.0.0",
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
+    "vite-plugin-dts": "^3.4.0",
     "vue-tsc": "^1.8.5"
   }
 }
