@@ -64,6 +64,7 @@ const rescan = () => {
     <h2>MRZ Scanner</h2>
     <button @click="startScanner">Start Scanning MRZ</button>
     <pre v-if="confirmed">{{ MRZString() }}</pre>
+    <div style="margin-top:20px">Powered by <a target="_blank" href="https://www.dynamsoft.com/label-recognition/overview/">Dynamsoft Label Recognizer</a></div>
   </div>
   <div v-if="showScanner">
     <MRZScanner 
