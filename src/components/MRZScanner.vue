@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, type Ref} from "vue";
 import {CameraEnhancer, DrawingItem} from "dynamsoft-camera-enhancer";
-import {LabelRecognizer} from "dynamsoft-label-recognizer";
+import {DLRLineResult, LabelRecognizer} from "dynamsoft-label-recognizer";
 const elRef: Ref<HTMLDivElement | null> = ref(null);
 const defaultDCEEngineResourcePath = "https://cdn.jsdelivr.net/npm/dynamsoft-camera-enhancer@3.3.4/dist/";
 const defaultDLRengineResourcePath  = "https://cdn.jsdelivr.net/npm/dynamsoft-label-recognizer@2.2.30/dist/";
+
+const props = defineProps({
+  license: String,
+  scanning: Boolean,
+  dceEngineResourcePath: String,
+  dlrEngineResourcePath: String
+})
+const emit = defineEmits<{
+  (e: 'scanned', results: DLRLineResult[]): void
+  (e: 'initialized', dce:CameraEnhancer,dlr:LabelRecognizer): void
+}>();
 
 let dce:CameraEnhancer|null;
 let dlr:LabelRecognizer|null;
@@ -16,9 +27,9 @@ onMounted(async()=>{
 
   try{
     if (LabelRecognizer.isWasmLoaded() === false) {
-      CameraEnhancer.engineResourcePath = defaultDCEEngineResourcePath;
-      LabelRecognizer.engineResourcePath = defaultDLRengineResourcePath;
-      LabelRecognizer.license = "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ=="; //one-day trial
+      CameraEnhancer.engineResourcePath = props.dceEngineResourcePath ?? defaultDCEEngineResourcePath;
+      LabelRecognizer.engineResourcePath = props.dlrEngineResourcePath ?? defaultDLRengineResourcePath;
+      LabelRecognizer.license = props.license ?? "DLS2eyJoYW5kc2hha2VDb2RlIjoiMjAwMDAxLTE2NDk4Mjk3OTI2MzUiLCJvcmdhbml6YXRpb25JRCI6IjIwMDAwMSIsInNlc3Npb25QYXNzd29yZCI6IndTcGR6Vm05WDJrcEQ5YUoifQ=="; //one-day trial
     }
     dce = await CameraEnhancer.createInstance();
     dlr = await LabelRecognizer.createInstance();
@@ -28,9 +39,13 @@ onMounted(async()=>{
     dce.setVideoFit("cover");
     // Callback to MRZ recognizing result
     dlr.onMRZRead = async (txt, results) => {
-        console.log("MRZ results: \n", txt, "\n", results);
+      console.log("MRZ results: \n", txt, "\n", results);
+      emit("scanned",results);
     }
-    await dlr.startScanning(true);
+    emit("initialized", dce, dlr);
+    if (props.scanning) {
+      await dlr.startScanning(true);
+    }
   } catch(ex:any) {
     let errMsg: string;
     if (ex.message.includes("network connection error")) {
@@ -66,6 +81,7 @@ onUnmounted(async() => {
           <select class="dce-sel-resolution"></select>
           <select class="dlr-sel-minletter"></select>
       </div>
+      <slot></slot>
   </div>
 </template>
 
