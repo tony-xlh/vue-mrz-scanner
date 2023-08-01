@@ -9,6 +9,7 @@ const defaultDLRengineResourcePath  = "https://cdn.jsdelivr.net/npm/dynamsoft-la
 const props = defineProps({
   license: String,
   scanning: Boolean,
+  hideSelect: Boolean,
   dceEngineResourcePath: String,
   dlrEngineResourcePath: String
 })
@@ -100,7 +101,7 @@ watch(() => props.scanning, (newVal) => {
       <div class="dce-scanarea">
           <div class="dce-scanlight"></div>
       </div>
-      <div class="sel-container">
+      <div v-if="hideSelect != true" class="sel-container">
           <select class="dce-sel-camera"></select>
           <select class="dce-sel-resolution"></select>
           <select class="dlr-sel-minletter"></select>
