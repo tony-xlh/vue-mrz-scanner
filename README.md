@@ -4,7 +4,7 @@ A Vue component to scan MRZ on passports, visa cards, etc. It is based on [Dynam
 
 [Online demo](https://joyful-kangaroo-d877bb.netlify.app/)
 
-[demo video](https://github.com/tony-xlh/react-mrz-scanner/assets/5462205/d201bca5-4ae2-43f9-adc9-b532f67e919e)
+[Demo video](https://github.com/tony-xlh/vue-mrz-scanner/assets/5462205/8f329a71-bf7b-40e3-950e-2e5934ba57f9)
 
 ## Installation
 
